@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- System -->
+    <string name="app_name">Join</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Main Activity -->
+    <string name="scan_peers">Scan Peers</string>
+    <string name="scan_choose_peer">Choose peer to connect</string>
+    <string name="title_activity_peers_list">Peers</string>
+
+</resources>
