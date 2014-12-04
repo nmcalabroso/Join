@@ -1,9 +1,6 @@
 package up.ndsg.join;
 
 import android.app.Application;
-import android.content.Intent;
-import android.net.Network;
-import android.view.Menu;
 
 
 public class JoinApplication extends Application {

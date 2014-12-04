@@ -5,32 +5,48 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/scan_peers"
-        android:id="@+id/button_scan_peer"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="scanPeers"/>
-
-    <TextView
-        android:id="@+id/scan_peer_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/scan_choose_peer"
-        android:layout_below="@id/button_scan_peer"
-        android:layout_centerHorizontal="true"
-        android:textSize="15sp" />
-
     <LinearLayout
-        android:id="@+id/android:list"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/scan_peer_text"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    </LinearLayout>
+        android:layout_alignParentStart="true"
+        android:id="@+id/status_layout">
 
+        <ImageButton android:id="@+id/image_button_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/inactive_circle"
+            android:contentDescription="network status" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/textview_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="20sp"/>
+
+            <TextView android:id="@+id/textview_device_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Model" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="Scan"
+            android:onClick="scanForPeers"/>
+    </LinearLayout>
 </RelativeLayout>

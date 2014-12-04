@@ -1,34 +1,58 @@
 package up.ndsg.join;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
+import static android.net.wifi.p2p.WifiP2pManager.Channel;
+import static android.net.wifi.p2p.WifiP2pManager.ChannelListener;
+import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION;
+import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION;
+import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION;
+import static android.net.wifi.p2p.WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION;
+import static android.os.Build.MANUFACTURER;
+import static android.os.Build.MODEL;
 import static android.view.View.OnCreateContextMenuListener;
 
 
-public class PeersListActivity extends ListActivity implements OnCreateContextMenuListener {
+public class PeersListActivity extends Activity implements OnCreateContextMenuListener,
+                                                           ChannelListener,
+                                                           DeviceActionListener {
 
-    private NetworkManager mNetworkManager;
-    private ListView mList;
-    private PeerAdapter mAdapter;
-    private ProgressDialog mLoadingPopup;
+    private final IntentFilter intentFilter = new IntentFilter();
+    private WifiP2pManager manager;
+    private Channel channel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_peers_list);
 
-        this.mNetworkManager = ((JoinApplication) getApplication()).getNetworkManager();
-        this.mList = (ListView) findViewById(android.R.id.list);
-        this.mAdapter = new PeerAdapter(this, R.id.textview_row_peer_name);
-        this.mList.setAdapter(this.mAdapter);
-        this.mLoadingPopup = new ProgressDialog(this);
+        intentFilter.addAction(WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        intentFilter.addAction(WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
+        TextView device_name = (TextView) findViewById(R.id.textview_device_name);
+        TextView device_model = (TextView) findViewById(R.id.textview_device_model);
+        ImageButton status = (ImageButton) findViewById(R.id.image_button_status);
+
+        device_name.setText(MANUFACTURER);
+        device_model.setText(MODEL);
+        status.setImageResource(R.drawable.active_circle);
+
+        manager = (WifiP2pManager) getApplicationContext().getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(this, getMainLooper(), null);
     }
 
     @Override
@@ -53,8 +77,31 @@ public class PeersListActivity extends ListActivity implements OnCreateContextMe
         return super.onOptionsItemSelected(item);
     }
 
-    public void scanPeers(View view) {
-        this.mLoadingPopup = ProgressDialog.show(this, "", "Scanning...");
-        //this.mNetworkManager.scanForPeers(getApplicationContext(), )
+    @Override
+    public void onChannelDisconnected() {
+
+    }
+
+    @Override
+    public void showDetails(WifiP2pDevice device) {
+
+    }
+
+    @Override
+    public void cancelDisconnect() {
+
+    }
+
+    @Override
+    public void connect(WifiP2pConfig config) {
+
+    }
+
+    @Override
+    public void disconnect() {
+
+    }
+
+    public void scanForPeers(View view) {
     }
 }
