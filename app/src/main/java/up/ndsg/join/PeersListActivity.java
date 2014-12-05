@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.FeatureInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -44,8 +46,14 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
     @Override
     public void onResume() {
         super.onResume();
-        //receiver = new NetworkManager(manager, channel, this);
-        //registerReceiver(receiver, intentFilter);
+        if (isWifiDirectSupported()){
+            receiver = new NetworkManager(manager, channel, this);
+            registerReceiver(receiver, intentFilter);
+        }
+        else {
+            Toast.makeText(this, "Device not supported.", Toast.LENGTH_SHORT).show();
+            this.finish();
+        }
     }
 
     @Override
@@ -137,8 +145,10 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
 //        }
     }
 
-    public void setP2PEnabled(boolean p2PEnabled){
-        this.isP2PEnabled = p2PEnabled;
+    public void setP2PEnabled(boolean p2pEnabled){
+        this.isP2PEnabled = p2pEnabled;
+        ImageButton imageButton = (ImageButton) findViewById(R.id.image_button_status);
+        imageButton.setImageResource(R.drawable.active_circle);
     }
 
     public void scanForPeers(View view) {
@@ -169,5 +179,10 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public boolean isWifiDirectSupported() {
+        PackageManager pm = (PackageManager) this.getPackageManager();
+        return pm.hasSystemFeature("android.hardware.wifi.direct");
     }
 }

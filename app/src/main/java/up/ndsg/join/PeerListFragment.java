@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,5 +68,12 @@ public class PeerListFragment extends ListFragment implements PeerListListener {
     public void clearPeers() {
         peers.clear();
         ((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();
+    }
+
+    public void updateThisDevice(WifiP2pDevice device){
+        this.device = device;
+        TextView view = (TextView) mContentView.findViewById(R.id.device_name);
+        view.setText(device.deviceName);
+        //view = (TextView) mContentView.findViewById(R.id.)
     }
 }
