@@ -32,4 +32,6 @@
         android:layout_gravity="center"
         android:layout_height="match_parent"
         android:text="@string/empty_message" />
+
+
 </LinearLayout>

@@ -72,9 +72,9 @@
         android:layout_height="fill_parent">
     </fragment>
 
-    <fragment android:id="@+id/fragment_peer_detail"
+    <!--<fragment android:id="@+id/fragment_peer_detail"
         class="up.ndsg.join.PeerDetailFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </fragment>
+    </fragment>-->
 </LinearLayout>

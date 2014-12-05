@@ -44,14 +44,14 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
     @Override
     public void onResume() {
         super.onResume();
-        receiver = new NetworkManager(manager, channel, this);
-        registerReceiver(receiver, intentFilter);
+        //receiver = new NetworkManager(manager, channel, this);
+        //registerReceiver(receiver, intentFilter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+        //unregisterReceiver(receiver);
     }
 
     @Override
@@ -124,17 +124,17 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
     }
 
     public void resetData() {
-        PeerListFragment fragmentList = (PeerListFragment) getFragmentManager()
-                .findFragmentById(R.id.fragment_peer_list);
-        PeerDetailFragment fragmentDetails = (PeerDetailFragment) getFragmentManager()
-                .findFragmentById(R.id.fragment_peer_detail);
-
-        if (fragmentList != null) {
-            fragmentList.clearPeers();
-        }
-        if (fragmentDetails != null) {
-            fragmentDetails.resetViews();
-        }
+//        PeerListFragment fragmentList = (PeerListFragment) getFragmentManager()
+//                .findFragmentById(R.id.fragment_peer_list);
+//        PeerDetailFragment fragmentDetails = (PeerDetailFragment) getFragmentManager()
+//                .findFragmentById(R.id.fragment_peer_detail);
+//
+//        if (fragmentList != null) {
+//            fragmentList.clearPeers();
+//        }
+//        if (fragmentDetails != null) {
+//            fragmentDetails.resetViews();
+//        }
     }
 
     public void setP2PEnabled(boolean p2PEnabled){
@@ -145,7 +145,6 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
         final PeerListFragment fragment;
 
         if (!this.isP2PEnabled) {
-            //Toast.makeText(this, R.string.p2p_off_warning, Toast.LENGTH_SHORT).show();
             if (manager != null && channel != null) {
                 startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
             }
