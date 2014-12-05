@@ -14,7 +14,7 @@ public class NetworkManager extends BroadcastReceiver {
     private WifiP2pManager mWiFi;
     private Channel mChannel;
 
-    public NetworkManager(Context context) {
+    public NetworkManager(WifiP2pManager manager, Channel channel, Context context) {
         super();
         this.mContext =  context;
         this.mWiFi = (WifiP2pManager) this.mContext.getSystemService(Context.WIFI_P2P_SERVICE);

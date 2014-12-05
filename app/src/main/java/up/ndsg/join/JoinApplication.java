@@ -10,7 +10,6 @@ public class JoinApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mNetworkManager = new NetworkManager(getApplicationContext());
     }
 
     @Override
@@ -18,7 +17,4 @@ public class JoinApplication extends Application {
         super.onTerminate();
     }
 
-    public NetworkManager getNetworkManager() {
-        return this.mNetworkManager;
-    }
 }

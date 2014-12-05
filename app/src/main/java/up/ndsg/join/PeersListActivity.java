@@ -1,18 +1,23 @@
 package up.ndsg.join;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static android.net.wifi.p2p.WifiP2pManager.Channel;
 import static android.net.wifi.p2p.WifiP2pManager.ChannelListener;
@@ -29,9 +34,25 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
                                                            ChannelListener,
                                                            DeviceActionListener {
 
+    public static final String TAG = "Join";
     private final IntentFilter intentFilter = new IntentFilter();
     private WifiP2pManager manager;
     private Channel channel;
+    private BroadcastReceiver receiver;
+    private boolean isP2PEnabled;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        receiver = new NetworkManager(manager, channel, this);
+        registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +123,52 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
 
     }
 
+    public void resetData() {
+        PeerListFragment fragmentList = (PeerListFragment) getFragmentManager()
+                .findFragmentById(R.id.fragment_peer_list);
+        PeerDetailFragment fragmentDetails = (PeerDetailFragment) getFragmentManager()
+                .findFragmentById(R.id.fragment_peer_detail);
+
+        if (fragmentList != null) {
+            fragmentList.clearPeers();
+        }
+        if (fragmentDetails != null) {
+            fragmentDetails.resetViews();
+        }
+    }
+
+    public void setP2PEnabled(boolean p2PEnabled){
+        this.isP2PEnabled = p2PEnabled;
+    }
+
     public void scanForPeers(View view) {
+        final PeerListFragment fragment;
+
+        if (!this.isP2PEnabled) {
+            //Toast.makeText(this, R.string.p2p_off_warning, Toast.LENGTH_SHORT).show();
+            if (manager != null && channel != null) {
+                startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+            }
+            else {
+                Log.e(TAG, "channel or manager is null");
+            }
+            return;
+        }
+
+        fragment = (PeerListFragment) getFragmentManager().findFragmentById(R.id.fragment_peer_list);
+        fragment.onInitiateDiscovery();
+        manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(PeersListActivity.this, "Discovery Initiated",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Toast.makeText(PeersListActivity.this, "Discovery Failed : " + reason,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -2,6 +2,7 @@ package up.ndsg.join;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.os.Bundle;
@@ -41,6 +42,30 @@ public class PeerListFragment extends ListFragment implements PeerListListener {
         }
         peers.clear();
         peers.addAll(peerList.getDeviceList());
+        ((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();
+    }
+
+    public void onInitiateDiscovery() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+
+        progressDialog = ProgressDialog.show(getActivity(),
+                "Press back to cancel",
+                "Finding peers...",
+                true,
+                true,
+                new DialogInterface.OnCancelListener() {
+
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+
+                    }
+                });
+    }
+
+    public void clearPeers() {
+        peers.clear();
         ((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();
     }
 }
