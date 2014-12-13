@@ -40,7 +40,7 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
     private final IntentFilter intentFilter = new IntentFilter();
     private WifiP2pManager manager;
     private Channel channel;
-    private BroadcastReceiver receiver;
+    public BroadcastReceiver receiver;
     private boolean isP2PEnabled;
 
     @Override
@@ -59,7 +59,7 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
     @Override
     public void onPause() {
         super.onPause();
-        //unregisterReceiver(receiver);
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -123,7 +123,19 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
 
     @Override
     public void connect(WifiP2pConfig config) {
+        manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(PeersListActivity.this,"Device Invited",Toast.LENGTH_SHORT)
+                        .show();
+            }
 
+            @Override
+            public void onFailure(int i) {
+                Toast.makeText(PeersListActivity.this, "Connect failed. Retry.", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     @Override
@@ -169,8 +181,7 @@ public class PeersListActivity extends Activity implements OnCreateContextMenuLi
         manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(PeersListActivity.this, "Discovery Initiated",
-                        Toast.LENGTH_SHORT).show();
+                // Network Manager will update
             }
 
             @Override

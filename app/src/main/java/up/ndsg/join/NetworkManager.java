@@ -8,6 +8,7 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.util.Log;
+import android.widget.Toast;
 
 import static android.net.wifi.p2p.WifiP2pManager.*;
 import static android.net.wifi.p2p.WifiP2pManager.ActionListener;
@@ -58,16 +59,22 @@ public class NetworkManager extends BroadcastReceiver {
             NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
             if (networkInfo.isConnected()) {
+                Toast.makeText(this.mContext, "Connection Successful", Toast.LENGTH_SHORT).show();
+                Log.d(((PeersListActivity) this.mContext).TAG, "CONNECTION SUCCESSFULLLLLLLLL");
                 //PeerDetailFragment fragment = (PeerDetailFragment) activity.getFragmentManager().findFragmentById(R.id.fragment_peer_detail);
                 //this.mWiFi.requestConnectionInfo(mChannel, fragment);
             }
             else {
+                Toast.makeText(this.mContext, "Unsuccessful", Toast.LENGTH_SHORT).show();
                 activity.resetData();
             }
         }
         else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             PeerListFragment fragment = (PeerListFragment) activity.getFragmentManager().findFragmentById(R.id.fragment_peer_list);
-            fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));        }
+            //fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));
+            //
+        }
+
 
     }
 }
